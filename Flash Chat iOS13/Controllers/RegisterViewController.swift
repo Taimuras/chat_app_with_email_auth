@@ -7,13 +7,29 @@
 //
 
 import UIKit
+import Firebase
+
 
 class RegisterViewController: UIViewController {
 
+    let chatSegue = "RegisterToChat"
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
     
+    override func viewDidLoad() {
+        navigationController?.isNavigationBarHidden = false
+    }
+    
     @IBAction func registerPressed(_ sender: UIButton) {
+        if let email = emailTextfield.text, let password = passwordTextfield.text {
+            Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+                if let e = error {
+                    print(e.localizedDescription)
+                } else {
+                    self.performSegue(withIdentifier: K.registerSegue, sender: self)
+                }
+            }
+        }
     }
     
 }
